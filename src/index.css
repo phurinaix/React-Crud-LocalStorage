@@ -10,3 +10,19 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+table {
+  font-size: 0.8em !important;
+}
+label {
+  font-size: 0.8em !important;
+}
+
+.form-group {
+  margin: 0 !important;
+}
+button {
+  margin: 10px 5px 10px 0;
+}
+input, select, button{
+  font-size: 0.8em !important;
+}

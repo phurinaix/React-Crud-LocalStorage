@@ -3,10 +3,16 @@ import { FETCH_USERS, FETCH_ONE_USER, CREATE_USER, UPDATE_USER, DELETE_USER, CAN
 const initialState = {
     users: [],
     id: 0,
+    title: '',
     firstName: '',
     lastName: '',
-    email: '',
+    birthday: '',
+    nationality: '',
+    citizenId: '',
     gender: 'male',
+    phone: '',
+    passportNumber: '',
+    salary: 0,
     updateEvent: false
 }
 
@@ -22,10 +28,16 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 id: user.id,
+                title: user.title,
                 firstName: user.firstName,
                 lastName: user.lastName,
-                email: user.email,
+                birthday: user.birthday,
+                nationality: user.nationality,
+                citizenId: user.citizenId,
                 gender: user.gender,
+                phone: user.phone,
+                passportNumber: user.passportNumber,
+                salary: user.salary,
                 updateEvent: true
             };
         case CREATE_USER:
@@ -35,28 +47,46 @@ export default function(state = initialState, action) {
             }
             var user = {
                 id: previousId,
+                title: state.title,
                 firstName: state.firstName,
                 lastName: state.lastName,
-                email: state.email,
-                gender: state.gender
+                birthday: state.birthday,
+                nationality: state.nationality,
+                citizenId: state.citizenId,
+                gender: state.gender,
+                phone: state.phone,
+                passportNumber: state.passportNumber,
+                salary: state.salary,
             };
             var users = [...state.users, user];
             return {
                 ...state,
                 users,
+                title: '',
                 firstName: '',
                 lastName: '',
-                email: '',
-                gender: 'male'
+                birthday: '',
+                nationality: '',
+                citizenId: '',
+                gender: '',
+                phone: '',
+                passportNumber: '',
+                salary: '',
             };
         case UPDATE_USER:
             var users = state.users.map(user => {
                 if (user.id === state.id) {
                     user.id = state.id;
+                    user.title = state.title;
                     user.firstName = state.firstName;
                     user.lastName = state.lastName;
-                    user.email = state.email;
+                    user.birthday = state.birthday;
+                    user.nationality = state.nationality;
+                    user.citizenId = state.citizenId;
                     user.gender = state.gender;
+                    user.phone = state.phone;
+                    user.passportNumber = state.passportNumber;
+                    user.salary = state.salary;
                 }
                 return user
             });
@@ -64,10 +94,16 @@ export default function(state = initialState, action) {
                 ...state,
                 users,
                 id: 0,
+                title: '',
                 firstName: '',
                 lastName: '',
-                email: '',
-                gender: 'male',
+                birthday: '',
+                nationality: '',
+                citizenId: '',
+                gender: '',
+                phone: '',
+                passportNumber: '',
+                salary: '',
                 updateEvent: false
             }
         case DELETE_USER:
@@ -81,10 +117,16 @@ export default function(state = initialState, action) {
             return {
                 ...state,
                 id: 0,
+                title: '',
                 firstName: '',
                 lastName: '',
-                email: '',
-                gender: 'male',
+                birthday: '',
+                nationality: '',
+                citizenId: '',
+                gender: '',
+                phone: '',
+                passportNumber: '',
+                salary: '',
                 updateEvent: false
             }
         case CHANGE_EVENT:

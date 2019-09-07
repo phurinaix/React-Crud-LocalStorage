@@ -6,26 +6,25 @@ const CrudTable = ({ users, fetchUpdateHandler, deleteHandler }) => {
         <Table responsive className="border border-secondary">
             <thead>
                 <tr>
-                    <th>Id</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Email</th>
-                    <th>Gender</th>
-                    <th>Edit</th>
-                    <th>Delete</th>
+                    <th></th>
+                    <th>NAME</th>
+                    <th>GENDER</th>
+                    <th>MOBILE PHONE</th>
+                    <th>NATIONALITY</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
                 {users.length > 0 && users.map((user, i) => {
                     return (
                         <tr key={i}>
-                            <td>{user.id}</td>
-                            <td>{user.firstName}</td>
-                            <td>{user.lastName}</td>
-                            <td>{user.email}</td>
+                            <td><input type="checkbox" /></td>
+                            <td>{user.firstName} {user.lastName}</td>
                             <td>{user.gender}</td>
-                            <td><button type="button" className="btn btn-info" onClick={() => fetchUpdateHandler(user.id)}>Edit</button></td>
-                            <td><button type="button" className="btn btn-danger" onClick={() => deleteHandler(user.id)}>Delete</button></td>
+                            <td>{user.phone}</td>
+                            <td>{user.nationality}</td>
+                            <td><button type="button" className="btn btn-info" onClick={() => fetchUpdateHandler(user.id)}>Edit</button>
+                            <button type="button" className="btn btn-danger" onClick={() => deleteHandler(user.id)}>Delete</button></td>
                         </tr>
                     )
                 })}

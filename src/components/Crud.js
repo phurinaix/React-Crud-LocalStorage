@@ -27,7 +27,7 @@ class Crud extends Component{
     }
     validateForm = () => {
         if (this.props.firstName === "" || this.props.lastName === "" || this.props.email === "") {
-            alert('กรุณากรอดข้อมูลให้ครบ');
+            alert('กรุณากรอกข้อมูลให้ครบ');
             return false;
         }
         if (this.props.users.findIndex(user => user.email === this.props.email) !== -1) {
@@ -40,9 +40,15 @@ class Crud extends Component{
         return (
             <div>
                 <CrudForm 
+                    title={this.props.title}
                     firstName={this.props.firstName}
                     lastName={this.props.lastName}
-                    email={this.props.email}
+                    birthday={this.props.birthday}
+                    nationality={this.props.nationality}
+                    citizenId={this.props.citizenId}
+                    phone={this.props.phone}
+                    passportNumber={this.props.passportNumber}
+                    salary={this.props.salary}
                     onChangeHandler={this.props.changeEvent}
                     onSubmitHandler={this.onSubmitHandler}
                     updateHandler={this.updateHandler}
@@ -73,10 +79,16 @@ Crud.propTypes = {
 const mapStateToProps = state => ({
     users: state.users.users,
     id: state.users.id,
+    title: state.users.title,
     firstName: state.users.firstName,
     lastName: state.users.lastName,
-    email: state.users.email,
+    birthday: state.users.birthday,
+    nationality: state.users.nationality,
+    citizenId: state.users.citizenId,
     gender: state.users.gender,
+    phone: state.users.phone,
+    passportNumber: state.users.passportNumber,
+    salary: state.users.salary,
     updateEvent: state.users.updateEvent
 });
 
