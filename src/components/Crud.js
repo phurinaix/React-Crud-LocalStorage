@@ -1,125 +1,54 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { fetchUsers, createUser, deleteUser, updateUser, cancel, fetchOneUser, changeEvent } from '../actions/user-action';
 import CrudForm from './CrudForm';
 import CrudTable from './CrudTable';
-// import { Table } from 'react-bootstrap';
 
 class Crud extends Component{
-    state = {
-        users: [],
-        id: 0,
-        firstName: '',
-        lastName: '',
-        email: '',
-        gender: 'male',
-        updateEvent: false
-    }
-    onChangeHandler = (e) => {
-        this.setState({
-            [e.target.name]: e.target.value
-        })
-    }
     onSubmitHandler = (e) => {
         e.preventDefault();
-        
         // Validate
-        if (this.state.firstName === "" || this.state.lastName === "" || this.state.email === "") {
+        this.validateForm();
+        this.props.createUser().then(() => localStorage.setItem("users", JSON.stringify(this.props.users)));
+    }
+    updateHandler = () => {
+        this.props.updateUser().then(() => localStorage.setItem("users", JSON.stringify(this.props.users)));
+    }
+    deleteHandler = (id) => {
+        this.props.deleteUser(id).then(() => localStorage.setItem("users", JSON.stringify(this.props.users)));
+    }
+    componentDidMount() {
+        if (this.props.users.length === 0) { 
+            this.props.fetchUsers();
+        }
+    }
+    validateForm = () => {
+        if (this.props.firstName === "" || this.props.lastName === "" || this.props.email === "") {
             alert('กรุณากรอดข้อมูลให้ครบ');
             return false;
         }
-        if (this.state.users.findIndex(user => user.email === this.state.email) !== -1) {
+        if (this.props.users.findIndex(user => user.email === this.props.email) !== -1) {
             alert('อีเมล์ซ้ำ');
             return false;
-        }
-
-        let previousId = 1;
-        if (this.state.users.length > 0) {
-            previousId = this.state.users[this.state.users.length - 1].id + 1;
-        }
-        const user = {
-            id: previousId,
-            firstName: this.state.firstName,
-            lastName: this.state.lastName,
-            email: this.state.email,
-            gender: this.state.gender
-        };
-        const users = [...this.state.users, user];
-        this.setState({
-            users: users,
-            firstName: '',
-            lastName: '',
-            email: '',
-            gender: 'male'
-        }, localStorage.setItem("users", JSON.stringify(users)));
-
-    }
-    fetchUpdateHandler = (id) => {
-        const user = this.state.users.find(user => user.id === id);
-        this.setState({
-            id: user.id,
-            firstName: user.firstName,
-            lastName: user.lastName,
-            email: user.email,
-            gender: user.gender,
-            updateEvent: true
-        });
-    }
-    updateHandler = () => {
-        const users = this.state.users.map(user => {
-            if (user.id === this.state.id) {
-                user.id = this.state.id;
-                user.firstName = this.state.firstName;
-                user.lastName = this.state.lastName;
-                user.email = this.state.email;
-                user.gender = this.state.gender;
-            }
-            return user
-        });
-        this.setState({
-            users,
-            id: 0,
-            firstName: '',
-            lastName: '',
-            email: '',
-            gender: 'male',
-            updateEvent: false
-        }, localStorage.setItem("users", JSON.stringify(users)));
-    }
-    cancelHandler = () => {
-        this.setState({
-            id: 0,
-            firstName: '',
-            lastName: '',
-            email: '',
-            gender: 'male',
-            updateEvent: false
-        });
-    }
-    deleteHandler = (id) => {
-        const users = this.state.users.filter(user => user.id !== id);
-        this.setState({ users, updateEvent: false }, localStorage.setItem("users", JSON.stringify(users)));
-    }
-    componentDidMount() {
-        let users = JSON.parse(localStorage.getItem("users"));
-        if (users) {
-            this.setState({ users })
         }
     }
     render() {
         return (
             <div>
                 <CrudForm 
-                    firstName={this.state.firstName}
-                    lastName={this.state.lastName}
-                    email={this.state.email}
-                    onChangeHandler={this.onChangeHandler}
+                    firstName={this.props.firstName}
+                    lastName={this.props.lastName}
+                    email={this.props.email}
+                    onChangeHandler={this.props.changeEvent}
                     onSubmitHandler={this.onSubmitHandler}
                     updateHandler={this.updateHandler}
-                    cancelHandler={this.cancelHandler}
-                    updateEvent={this.state.updateEvent}
+                    cancelHandler={this.props.cancel}
+                    updateEvent={this.props.updateEvent}
                 />
                 <CrudTable 
-                    users={this.state.users}
-                    fetchUpdateHandler={this.fetchUpdateHandler}
+                    users={this.props.users}
+                    fetchUpdateHandler={this.props.fetchOneUser}
                     deleteHandler={this.deleteHandler}
                 />
             </div>
@@ -127,4 +56,25 @@ class Crud extends Component{
     }
 }
 
-export default Crud;
+Crud.propTypes = {
+    fetchUsers: PropTypes.func.isRequired,
+    fetchOneUser: PropTypes.func.isRequired,
+    createUser: PropTypes.func.isRequired,
+    deleteUser: PropTypes.func.isRequired,
+    changeEvent: PropTypes.func.isRequired,
+    updateUser: PropTypes.func.isRequired,
+    cancel: PropTypes.func.isRequired,
+    users: PropTypes.array.isRequired,
+}
+
+const mapStateToProps = state => ({
+    users: state.users.users,
+    id: state.users.id,
+    firstName: state.users.firstName,
+    lastName: state.users.lastName,
+    email: state.users.email,
+    gender: state.users.gender,
+    updateEvent: state.users.updateEvent
+});
+
+export default connect(mapStateToProps, { fetchUsers, createUser, deleteUser, cancel, fetchOneUser, changeEvent, updateUser })(Crud);

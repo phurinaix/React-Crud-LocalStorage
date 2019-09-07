@@ -18,9 +18,9 @@ const CrudForm = ({ onSubmitHandler, firstName, lastName, email, updateEvent, on
             <div className="form-group">
                 <label htmlFor="gender">Gender</label>
                 <input type="radio" name="gender" value="male" checked onChange={onChangeHandler} />
-                <label for="exampleRadios1">Male</label>
+                <label htmlFor="exampleRadios1">Male</label>
                 <input type="radio" name="gender" value="female" onChange={onChangeHandler} />
-                <label for="exampleRadios1">Female</label>
+                <label htmlFor="exampleRadios1">Female</label>
             </div>
             {updateEvent ?
                 <React.Fragment>
