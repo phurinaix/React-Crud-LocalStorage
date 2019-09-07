@@ -22,9 +22,11 @@ class Crud extends Component{
     }
     updateHandler = () => {
         this.props.updateUser().then(() => localStorage.setItem("users", JSON.stringify(this.props.users)));
+        this.successMsg('Updated Success');
     }
     deleteHandler = (id) => {
         this.props.deleteUser(id).then(() => localStorage.setItem("users", JSON.stringify(this.props.users)));
+        this.successMsg('Deleted Success');
     }
     componentDidMount() {
         this.props.getNationality();
@@ -33,25 +35,40 @@ class Crud extends Component{
         }
     }
     validateForm = () => {
+        // เพิ่ม validate ตรงนี้
         if (this.props.firstName === "" || this.props.lastName === "" || this.props.birthday === "" || this.props.phone === "" || this.props.salary === null) {
-            this.errorMsg("กรุณากรอกข้อมูลให้ครบ");
-            return false;
+            return this.errorMsg("กรุณากรอกข้อมูลให้ครบ");
         }
         if (!(/^[0-9]+$/.test(this.props.citizenId))) {
-            this.errorMsg("citizen id ต้องเป็นตัวเลข")
-            return false;
+            return this.errorMsg("citizen id ต้องเป็นตัวเลข");
         }
+        if (!(/^[A-Za-z]+$/.test(this.props.firstName)) || !(/^[A-Za-z]+$/.test(this.props.lastName))) {
+            return this.errorMsg("ชื่อ-นามสกุล ต้องเป็นตัวอักษรภาษาอังกฤษเท่านั้น");
+        }
+        /**  ส่วนที่ยังเหลือ **/
+        // validate birthday ได้ส่งค่ามาไหม
+        // validate birthday ว่ามากกว่าเวลาปัจจุบันไหม
+        // validate citizen id มีครบ 13 ตัวไหม
+        // validate citizen id เป็นเลขทุกตัวไหม
+        // validate phone เป็นเลขทุกตัวไหม
+        // validate passport number เป็นเลขทุกตัวไหม
+        // validate salary มากกว่า 0 ไหม
+        // validate ช่องที่ต้องใส่เป็นตัวเลขว่าได้ใส่ ค่า e มาหรือไหม หรือค่าติดลบมาหรือไหม
+        // อื่นๆ
+
         return true;
     }
     errorMsg = (msg) => {
         toast.error(msg, {
             position: toast.POSITION.BOTTOM_RIGHT
         });
+        return false;
     }
     successMsg = (msg) => {
         toast.success(msg, {
             position: toast.POSITION.BOTTOM_RIGHT
         });
+        return true;
     }
     render() {
         return (

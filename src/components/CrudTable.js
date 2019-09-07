@@ -23,7 +23,7 @@ const CrudTable = ({ users, fetchUpdateHandler, deleteHandler, startElement }) =
                             <td>{user.firstName} {user.lastName}</td>
                             <td>{user.gender}</td>
                             <td>{user.phone}</td>
-                            <td>{user.nationality}</td>
+                            <td>{user.nationality.toUpperCase()}</td>
                             <td><button type="button" className="btn btn-info" onClick={() => fetchUpdateHandler(user.id)}>Edit</button>
                             <button type="button" className="btn btn-danger" onClick={() => deleteHandler(user.id)}>Delete</button></td>
                         </tr>
