@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { fetchUsers, createUser, deleteUser, updateUser, cancel, fetchOneUser, changeEvent } from '../actions/user-action';
 import CrudForm from './CrudForm';
 import CrudTable from './CrudTable';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 class Crud extends Component{
     onSubmitHandler = (e) => {
@@ -13,6 +15,7 @@ class Crud extends Component{
             return false;
         }
         this.props.createUser().then(() => localStorage.setItem("users", JSON.stringify(this.props.users)));
+        this.successMsg('Success');
     }
     updateHandler = () => {
         this.props.updateUser().then(() => localStorage.setItem("users", JSON.stringify(this.props.users)));
@@ -27,14 +30,24 @@ class Crud extends Component{
     }
     validateForm = () => {
         if (this.props.firstName === "" || this.props.lastName === "" || this.props.email === "") {
-            alert('กรุณากรอกข้อมูลให้ครบ');
+            this.errorMsg("กรุณากรอกข้อมูลให้ครบ");
             return false;
         }
-        if (this.props.users.findIndex(user => user.email === this.props.email) !== -1) {
-            alert('อีเมล์ซ้ำ');
+        if (!(/^[0-9]+$/.test(this.props.citizenId))) {
+            this.errorMsg("citizen id ต้องเป็นตัวเลข")
             return false;
         }
         return true;
+    }
+    errorMsg = (msg) => {
+        toast.error(msg, {
+            position: toast.POSITION.BOTTOM_RIGHT
+        });
+    }
+    successMsg = (msg) => {
+        toast.success(msg, {
+            position: toast.POSITION.BOTTOM_RIGHT
+        });
     }
     render() {
         return (
@@ -60,6 +73,7 @@ class Crud extends Component{
                     fetchUpdateHandler={this.props.fetchOneUser}
                     deleteHandler={this.deleteHandler}
                 />
+                <ToastContainer autoClose={4000} hideProgressBar/>
             </div>
         )
     }
