@@ -10,6 +10,7 @@ class Crud extends Component{
         firstName: '',
         lastName: '',
         email: '',
+        gender: 'male',
         updateEvent: false
     }
     onChangeHandler = (e) => {
@@ -38,14 +39,16 @@ class Crud extends Component{
             id: previousId,
             firstName: this.state.firstName,
             lastName: this.state.lastName,
-            email: this.state.email
+            email: this.state.email,
+            gender: this.state.gender
         };
         const users = [...this.state.users, user];
         this.setState({
             users: users,
             firstName: '',
             lastName: '',
-            email: ''
+            email: '',
+            gender: 'male'
         }, localStorage.setItem("users", JSON.stringify(users)));
 
     }
@@ -56,6 +59,7 @@ class Crud extends Component{
             firstName: user.firstName,
             lastName: user.lastName,
             email: user.email,
+            gender: user.gender,
             updateEvent: true
         });
     }
@@ -66,6 +70,7 @@ class Crud extends Component{
                 user.firstName = this.state.firstName;
                 user.lastName = this.state.lastName;
                 user.email = this.state.email;
+                user.gender = this.state.gender;
             }
             return user
         });
@@ -75,6 +80,7 @@ class Crud extends Component{
             firstName: '',
             lastName: '',
             email: '',
+            gender: 'male',
             updateEvent: false
         }, localStorage.setItem("users", JSON.stringify(users)));
     }
@@ -84,6 +90,7 @@ class Crud extends Component{
             firstName: '',
             lastName: '',
             email: '',
+            gender: 'male',
             updateEvent: false
         });
     }
@@ -94,9 +101,7 @@ class Crud extends Component{
     componentDidMount() {
         let users = JSON.parse(localStorage.getItem("users"));
         if (users) {
-            this.setState({
-                users: users
-            })
+            this.setState({ users })
         }
     }
     render() {
