@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchUsers, createUser, deleteUser, updateUser, cancel, fetchOneUser, changeEvent } from '../actions/user-action';
-import CrudForm from './CrudForm';
-import CrudTable from './CrudTable';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import CrudForm from './CrudForm';
+import CrudPagination from './CrudPagination';
+import CrudTable from './CrudTable';
 
 class Crud extends Component{
     onSubmitHandler = (e) => {
@@ -68,6 +69,7 @@ class Crud extends Component{
                     cancelHandler={this.props.cancel}
                     updateEvent={this.props.updateEvent}
                 />
+                <CrudPagination />
                 <CrudTable 
                     users={this.props.users}
                     fetchUpdateHandler={this.props.fetchOneUser}
