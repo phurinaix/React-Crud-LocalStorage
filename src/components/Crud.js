@@ -9,7 +9,9 @@ class Crud extends Component{
     onSubmitHandler = (e) => {
         e.preventDefault();
         // Validate
-        this.validateForm();
+        if (!this.validateForm()) {
+            return false;
+        }
         this.props.createUser().then(() => localStorage.setItem("users", JSON.stringify(this.props.users)));
     }
     updateHandler = () => {
@@ -32,6 +34,7 @@ class Crud extends Component{
             alert('อีเมล์ซ้ำ');
             return false;
         }
+        return true;
     }
     render() {
         return (
