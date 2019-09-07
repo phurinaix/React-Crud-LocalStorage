@@ -1,9 +1,9 @@
 import React from 'react';
-import PhoneInput from 'react-phone-number-input';
-import flags from 'react-phone-number-input/flags'
+// import PhoneInput from 'react-phone-number-input';
+// import flags from 'react-phone-number-input/flags'
 
 const CrudForm = (props) => {
-    const { title, firstName, lastName, birthday, nationality, citizenId, phone, passportNumber, salary, onChangeHandler, onSubmitHandler, updateEvent, cancelHandler, updateHandler } = props;
+    const { title, firstName, lastName, birthday, nationality, citizenId, phone, passportNumber, salary, onChangeHandler, onSubmitHandler, updateEvent, cancelHandler, updateHandler, nationalityList } = props;
     return (
         <form onSubmit={onSubmitHandler} className="border border-secondary p-3 my-3">
             <div className="row">
@@ -32,9 +32,11 @@ const CrudForm = (props) => {
                 <div className="form-group col-md-8">
                     <label htmlFor="nationality">Nationality</label>
                     <select className="form-control" name="nationality" value={nationality} onChange={onChangeHandler}>
-                        <option>AMERICAN</option>
-                        <option>LAOS</option>
-                        <option>THAI</option>
+                        {nationalityList.map((element, i) => {
+                            return (
+                                <option key={i}>{element}</option>
+                            )
+                        })}
                     </select>
                 </div>
             </div>

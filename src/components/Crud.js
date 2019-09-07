@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { fetchUsers, createUser, deleteUser, updateUser, cancel, fetchOneUser, changeEvent } from '../actions/user-action';
+import { getNationality } from '../actions/info-action';
+import { selectPage } from '../actions/pagination-action';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import CrudForm from './CrudForm';
@@ -25,12 +27,13 @@ class Crud extends Component{
         this.props.deleteUser(id).then(() => localStorage.setItem("users", JSON.stringify(this.props.users)));
     }
     componentDidMount() {
+        this.props.getNationality();
         if (this.props.users.length === 0) { 
             this.props.fetchUsers();
         }
     }
     validateForm = () => {
-        if (this.props.firstName === "" || this.props.lastName === "" || this.props.email === "") {
+        if (this.props.firstName === "" || this.props.lastName === "" || this.props.birthday === "" || this.props.phone === "" || this.props.salary === null) {
             this.errorMsg("กรุณากรอกข้อมูลให้ครบ");
             return false;
         }
@@ -68,12 +71,18 @@ class Crud extends Component{
                     updateHandler={this.updateHandler}
                     cancelHandler={this.props.cancel}
                     updateEvent={this.props.updateEvent}
+                    nationalityList={this.props.nationalityList}
                 />
-                <CrudPagination />
+                <CrudPagination 
+                    numberOfUsers={this.props.users.length}
+                    numberOfUsersOnePage={this.props.numberOfUsersOnePage}
+                    selectPage={this.props.selectPage}
+                />
                 <CrudTable 
                     users={this.props.users}
                     fetchUpdateHandler={this.props.fetchOneUser}
                     deleteHandler={this.deleteHandler}
+                    startElement={this.props.startElement}
                 />
                 <ToastContainer autoClose={4000} hideProgressBar/>
             </div>
@@ -89,6 +98,8 @@ Crud.propTypes = {
     changeEvent: PropTypes.func.isRequired,
     updateUser: PropTypes.func.isRequired,
     cancel: PropTypes.func.isRequired,
+    getNationality: PropTypes.func.isRequired,
+    selectPage: PropTypes.func.isRequired,
     users: PropTypes.array.isRequired,
 }
 
@@ -105,7 +116,10 @@ const mapStateToProps = state => ({
     phone: state.users.phone,
     passportNumber: state.users.passportNumber,
     salary: state.users.salary,
-    updateEvent: state.users.updateEvent
+    updateEvent: state.users.updateEvent,
+    nationalityList: state.info.nationality,
+    startElement: state.pagination.startElement,
+    numberOfUsersOnePage: state.pagination.numberOfUsersOnePage
 });
 
-export default connect(mapStateToProps, { fetchUsers, createUser, deleteUser, cancel, fetchOneUser, changeEvent, updateUser })(Crud);
+export default connect(mapStateToProps, { fetchUsers, createUser, deleteUser, cancel, fetchOneUser, changeEvent, updateUser, getNationality, selectPage })(Crud);

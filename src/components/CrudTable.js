@@ -1,7 +1,8 @@
 import React from 'react';
 import { Table } from 'react-bootstrap';
 
-const CrudTable = ({ users, fetchUpdateHandler, deleteHandler }) => {
+const CrudTable = ({ users, fetchUpdateHandler, deleteHandler, startElement }) => {
+    console.log("StartElement => ", startElement);
     return (
         <Table responsive className="border border-secondary">
             <thead>
@@ -15,7 +16,7 @@ const CrudTable = ({ users, fetchUpdateHandler, deleteHandler }) => {
                 </tr>
             </thead>
             <tbody>
-                {users.length > 0 && users.map((user, i) => {
+                {users.length > 0 && users.slice(startElement, startElement + 5).map((user, i) => {
                     return (
                         <tr key={i}>
                             <td><input type="checkbox" /></td>
